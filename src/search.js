@@ -1,14 +1,16 @@
 'use strict';
 
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import beauty from './images/beauty.jpg';
 import './search.less';
 
 function Search() {
+  const [count, setCount] = useState(0);
+
   return (
     <div className="search-text">
-      Search Text 你好啊<img src={beauty} />
+      你好，赵丽颖11<img src={beauty} />
     </div>
   );
 }
