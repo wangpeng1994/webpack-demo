@@ -9,3 +9,5 @@ let [one, two] = arr
 let foo = () => console.log(one, two)
 
 foo()
+
+console.log(555)

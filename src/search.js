@@ -10,7 +10,7 @@ function Search() {
 
   return (
     <div className="search-text">
-      你好，赵丽颖11<img src={beauty} />
+      你好，赵丽颖啊<img src={beauty} />
     </div>
   );
 }
