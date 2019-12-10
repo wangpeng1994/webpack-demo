@@ -2,6 +2,8 @@
 
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -62,6 +64,29 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin({
       filename: '[name]_[contenthash:8].css'
+    }),
+    new OptimizeCSSAssetsPlugin(), // 会在构建时默认寻找 .css 文件并使用 cssnamo 压缩（可配置）
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: path.join(__dirname, 'src/index.html'),
+      chunks: ['index'], // HTML 中只引入感兴趣的 chunk
+      minify: {
+        collapseWhitespace: true,
+        preserveLineBreaks: false,
+        minifyCSS: true, // 压缩源 html 文件中的内联 css
+        minifyJS: true // 压缩源 html 文件中的内联 js
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'search.html',
+      template: path.join(__dirname, 'src/search.html'),
+      chunks: ['search'],
+      minify: {
+        collapseWhitespace: true,
+        preserveLineBreaks: false,
+        minifyCSS: true,
+        minifyJS: true
+      }
     })
   ]
 };
