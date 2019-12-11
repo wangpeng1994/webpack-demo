@@ -1,6 +1,7 @@
 'user strict';
 
 const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -50,6 +51,9 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    new CleanWebpackPlugin()
+  ],
   devServer: {
     contentBase: './dist',
     hot: true

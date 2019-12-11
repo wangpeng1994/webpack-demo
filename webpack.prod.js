@@ -4,6 +4,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -33,6 +34,19 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [require('autoprefixer')]
+            }
+          },
+          {
+            loader: 'px2rem-loader',
+            options: {
+              remUnit: 75, // 1rem = 75px
+              remPrecesion: 8 // 转为rem后，小数位个数
+            }
+          },
           'less-loader'
         ]
       },
@@ -87,6 +101,7 @@ module.exports = {
         minifyCSS: true,
         minifyJS: true
       }
-    })
+    }),
+    new CleanWebpackPlugin()
   ]
 };
