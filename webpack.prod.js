@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
 
 module.exports = {
   entry: {
@@ -102,6 +103,7 @@ module.exports = {
         minifyJS: true
       }
     }),
+    new HTMLInlineCSSWebpackPlugin(),
     new CleanWebpackPlugin()
   ]
 };
