@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import beauty from './images/beauty.jpg';
-import './search.less';
+import './index.less';
 
 function Search() {
   const [count, setCount] = useState(0);

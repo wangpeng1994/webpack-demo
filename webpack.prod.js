@@ -1,5 +1,6 @@
 'user strict';
 
+const glob = require('glob');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -7,11 +8,41 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
 
+const setMPA = () => {
+  const entry = {};
+  const HtmlWebpackPlugins = [];
+
+  const entryFiles = glob.sync(path.join(__dirname, './src/*/index.js'));
+
+  entryFiles.forEach((pagePath, index) => {
+    const pageName = pagePath.match(/src\/(.*)\/index\.js/)[1];
+    entry[pageName] = pagePath;
+
+    HtmlWebpackPlugins.push(
+      new HtmlWebpackPlugin({
+        filename: `${pageName}.html`,
+        template: path.join(__dirname, `src/${pageName}/index.html`),
+        chunks: [pageName],
+        minify: {
+          collapseWhitespace: true,
+          preserveLineBreaks: false,
+          minifyCSS: true,
+          minifyJS: true
+        }
+      })
+    );
+  });
+
+  return {
+    entry,
+    HtmlWebpackPlugins
+  };
+}
+
+const { entry, HtmlWebpackPlugins } = setMPA();
+
 module.exports = {
-  entry: {
-    index: './src/index.js',
-    search: './src/search.js'
-  },
+  entry,
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name]_[chunkhash:8].js',
@@ -81,28 +112,7 @@ module.exports = {
       filename: '[name]_[contenthash:8].css'
     }),
     new OptimizeCSSAssetsPlugin(), // 会在构建时默认寻找 .css 文件并使用 cssnamo 压缩（可配置）
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: path.join(__dirname, 'src/index.html'),
-      chunks: ['index'], // HTML 中只引入感兴趣的 chunk
-      minify: {
-        collapseWhitespace: true,
-        preserveLineBreaks: false,
-        minifyCSS: true, // 压缩源 html 文件中的内联 css
-        minifyJS: true // 压缩源 html 文件中的内联 js
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'search.html',
-      template: path.join(__dirname, 'src/search.html'),
-      chunks: ['search'],
-      minify: {
-        collapseWhitespace: true,
-        preserveLineBreaks: false,
-        minifyCSS: true,
-        minifyJS: true
-      }
-    }),
+    ...HtmlWebpackPlugins,
     new HTMLInlineCSSWebpackPlugin(),
     new CleanWebpackPlugin()
   ]
