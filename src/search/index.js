@@ -3,8 +3,12 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { common } from '../../common';
+import { a } from './tree-shaking';
 import beauty from './images/beauty.jpg';
 import './index.less';
+
+const text = a();
+console.log(text);
 
 common();
 
