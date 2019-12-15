@@ -22,7 +22,7 @@ const setMPA = () => {
       new HtmlWebpackPlugin({
         filename: `${pageName}.html`,
         template: path.join(__dirname, `src/${pageName}/index.html`),
-        chunks: [pageName],
+        chunks: ['vendors', 'commons', pageName],
         minify: {
           collapseWhitespace: true,
           preserveLineBreaks: false,
@@ -115,5 +115,22 @@ module.exports = {
     ...HtmlWebpackPlugins,
     new HTMLInlineCSSWebpackPlugin(),
     new CleanWebpackPlugin()
-  ]
+  ],
+  optimization: {
+    splitChunks: {
+      minSize: 0,
+      cacheGroups: {
+        vendors: {
+          test: /(react|react-dom)/,
+          name: 'vendors',
+          chunks: 'all'
+        },
+        commons: {
+          name: 'commons',
+          chunks: 'all',
+          minChunks: 2
+        }
+      }
+    }
+  }
 };

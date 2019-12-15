@@ -2,8 +2,11 @@
 
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
+import { common } from '../../common';
 import beauty from './images/beauty.jpg';
 import './index.less';
+
+common();
 
 function Search() {
   const [count, setCount] = useState(0);

@@ -1,13 +1,14 @@
+import { common } from '../../common';
 import { helloworld } from './helloworld';
+
+common();
 
 document.write(helloworld());
 
-let arr = [1,2,3]
-
-let [one, two] = arr
-debugger
-let foo = () => console.log(one, two)
+let foo = () => console.log(1, 2)
 
 foo()
 
-console.log(555)
+function App() {
+  return 'App';
+}
