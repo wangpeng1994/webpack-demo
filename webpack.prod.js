@@ -127,11 +127,11 @@ module.exports = {
           name: 'vendors',
           chunks: 'all'
         },
-        // commons: {
-        //   name: 'commons',
-        //   chunks: 'all',
-        //   minChunks: 2
-        // }
+        commons: {
+          name: 'commons',
+          chunks: 'all',
+          minChunks: 2
+        }
       }
     }
   }
