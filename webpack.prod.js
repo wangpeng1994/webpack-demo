@@ -7,6 +7,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
+const webpack = require('webpack');
 
 const setMPA = () => {
   const entry = {};
@@ -47,7 +48,7 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
     filename: '[name]_[chunkhash:8].js',
   },
-  mode: 'production',
+  mode: 'none',
   module: {
     rules: [
       {
@@ -114,7 +115,8 @@ module.exports = {
     new OptimizeCSSAssetsPlugin(), // 会在构建时默认寻找 .css 文件并使用 cssnamo 压缩（可配置）
     ...HtmlWebpackPlugins,
     new HTMLInlineCSSWebpackPlugin(),
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin()
   ],
   optimization: {
     splitChunks: {
@@ -125,11 +127,11 @@ module.exports = {
           name: 'vendors',
           chunks: 'all'
         },
-        commons: {
-          name: 'commons',
-          chunks: 'all',
-          minChunks: 2
-        }
+        // commons: {
+        //   name: 'commons',
+        //   chunks: 'all',
+        //   minChunks: 2
+        // }
       }
     }
   }

@@ -7,10 +7,11 @@ import { a } from './tree-shaking';
 import beauty from './images/beauty.jpg';
 import './index.less';
 
+// common();
+
 const text = a();
 console.log(text);
 
-common();
 
 function Search() {
   const [count, setCount] = useState(0);
