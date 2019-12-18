@@ -1,0 +1,22 @@
+{
+  "name": "xiaofeng-large-number",
+  "version": "0.0.7",
+  "description": "Tool for large numbers calculation in JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "prepublish": "webpack"
+  },
+  "keywords": [
+    "calculation",
+    "addition"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "terser-webpack-plugin": "^2.3.1",
+    "webpack": "^4.41.3",
+    "webpack-cli": "^3.3.10"
+  }
+}
