@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { common } from '../../common';
 import { a } from './tree-shaking';
-import beauty from './images/beauty.jpg';
+import logo from './images/logo.jpg';
 import './index.less';
 
 common();
@@ -32,7 +32,7 @@ console.log(text);
 //       {
 //         Text ? <Text /> : null
 //       }
-//       点击图片可以懒加载 Text 组件<img src={beauty} onClick={loadComponent} />
+//       点击图片可以懒加载 Text 组件<img src={logo} onClick={loadComponent} />
 //     </div>
 //   );
 // }
@@ -64,7 +64,7 @@ class Search extends React.Component {
         {
           Text ? <Text /> : null
         }
-        点击图片可以懒加载 Text 组件<img src={beauty} onClick={this.loadComponent.bind(this)} />
+        点击图片可以懒加载 Text 组件<img src={logo} onClick={this.loadComponent.bind(this)} />
       </div>
     );
   }
