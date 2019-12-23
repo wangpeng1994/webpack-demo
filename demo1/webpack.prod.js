@@ -2,12 +2,13 @@
 
 const glob = require('glob');
 const path = require('path');
+const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
-const webpack = require('webpack');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 const setMPA = () => {
   const entry = {};
@@ -48,7 +49,8 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
     filename: '[name]_[chunkhash:8].js',
   },
-  mode: 'none',
+  mode: 'production',
+  stats: 'errors-only',
   module: {
     rules: [
       {
@@ -119,7 +121,20 @@ module.exports = {
     ...HtmlWebpackPlugins,
     new HTMLInlineCSSWebpackPlugin(),
     new CleanWebpackPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin()
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    new FriendlyErrorsWebpackPlugin(),
+    function () {
+      this.hooks.done.tap('done', stats => {
+        if (
+          stats.compilation.errors &&
+          stats.compilation.errors.length &&
+          process.argv.indexOf('---watch') === -1
+        ) {
+          console.log('---build error---');
+          process.exit(1); // webpack 中错误码本身是 2，现在手动修改错误码为 1
+        }
+      });
+    },
   ],
   optimization: {
     splitChunks: {
@@ -137,5 +152,5 @@ module.exports = {
         }
       }
     }
-  }
+  },
 };
