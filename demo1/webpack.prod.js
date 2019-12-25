@@ -9,6 +9,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 
 const setMPA = () => {
   const entry = {};
@@ -50,7 +51,7 @@ module.exports = {
     filename: '[name]_[chunkhash:8].js',
   },
   mode: 'production',
-  stats: 'errors-only',
+  // stats: 'errors-only',
   module: {
     rules: [
       {
@@ -135,16 +136,36 @@ module.exports = {
         }
       });
     },
+    new HtmlWebpackTagsPlugin({
+      scripts: [
+        {
+          path: 'https://cdn.bootcss.com/react/16.8.6/umd/react.production.min.js',
+          external: {
+            packageName: 'react',
+            variableName: 'React'
+          }
+        },
+        {
+          path: 'https://cdn.bootcss.com/react-dom/16.8.6/umd/react-dom.production.min.js',
+          external: {
+            packageName: 'react-dom',
+            variableName: 'ReactDOM'
+          }
+        }
+      ]
+    })
   ],
   optimization: {
     splitChunks: {
       minSize: 0,
       cacheGroups: {
-        vendors: {
-          test: /(react|react-dom)/,
-          name: 'vendors',
-          chunks: 'all'
-        },
+        // 已经配置了 HtmlWebpackTagsPlugin，使用相关外部的 react 和 react-dom，
+        // 所以下面的 vendors 写不写都不会再提取
+        // vendors: {
+        //   test: /(react|react-dom)/,
+        //   name: 'vendors',
+        //   chunks: 'all'
+        // },
         commons: {
           name: 'commons',
           chunks: 'all',
