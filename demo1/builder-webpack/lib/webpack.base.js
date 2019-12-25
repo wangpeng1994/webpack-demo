@@ -1,7 +1,12 @@
 
+const path = require('path');
 const glob = require('glob');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+
+const projectRoot = process.cwd();
 
 const setMPA = () => {
   const entry = {};
@@ -103,9 +108,24 @@ module.exports = {
       }
     ]
   },
-
   plugins: [
     new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[name]_[contenthash:8].css'
+    }),
     ...HtmlWebpackPlugins,
-  ]
+    new FriendlyErrorsWebpackPlugin(),
+    function () {
+      this.hooks.done.tap('done', stats => {
+        if (
+          stats.compilation.errors &&
+          stats.compilation.errors.length &&
+          process.argv.indexOf('---watch') === -1
+        ) {
+          process.exit(1);
+        }
+      });
+    },
+  ],
+  stats: 'errors-only',
 };
