@@ -1,7 +1,7 @@
 const merge = require('webpack-merge');
-const baseConfig = require('./webpack.base');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
+const baseConfig = require('./webpack.base');
 
 const ssrConfig = {
   mode: 'production',
@@ -9,9 +9,9 @@ const ssrConfig = {
     rules: [
       {
         test: /\.(c|le)ss$/,
-        use: 'ignore-loader'
-      }
-    ]
+        use: 'ignore-loader',
+      },
+    ],
   },
   plugins: [
     new OptimizeCSSAssetsPlugin(),
@@ -21,18 +21,18 @@ const ssrConfig = {
           path: 'https://cdn.bootcss.com/react/16.8.6/umd/react.production.min.js',
           external: {
             packageName: 'react',
-            variableName: 'React'
-          }
+            variableName: 'React',
+          },
         },
         {
           path: 'https://cdn.bootcss.com/react-dom/16.8.6/umd/react-dom.production.min.js',
           external: {
             packageName: 'react-dom',
-            variableName: 'ReactDOM'
-          }
-        }
-      ]
-    })
+            variableName: 'ReactDOM',
+          },
+        },
+      ],
+    }),
   ],
   optimization: {
     splitChunks: {
@@ -41,10 +41,10 @@ const ssrConfig = {
         commons: {
           name: 'commons',
           chunks: 'all',
-          minChunks: 2
-        }
-      }
-    }
+          minChunks: 2,
+        },
+      },
+    },
   },
 };
 

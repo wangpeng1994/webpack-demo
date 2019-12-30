@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 const projectRoot = process.cwd();
 
@@ -14,7 +15,7 @@ const setMPA = () => {
 
   const entryFiles = glob.sync(path.join(__dirname, './src/*/index.js'));
 
-  entryFiles.forEach((pagePath, index) => {
+  entryFiles.forEach((pagePath) => {
     const pageName = pagePath.match(/src\/(.*)\/index\.js/)[1];
     entry[pageName] = pagePath;
 
@@ -27,17 +28,17 @@ const setMPA = () => {
           collapseWhitespace: true,
           preserveLineBreaks: false,
           minifyCSS: true,
-          minifyJS: true
-        }
-      })
+          minifyJS: true,
+        },
+      }),
     );
   });
 
   return {
     entry,
-    HtmlWebpackPlugins
+    HtmlWebpackPlugins,
   };
-}
+};
 
 const { entry, HtmlWebpackPlugins } = setMPA();
 
@@ -45,22 +46,22 @@ module.exports = {
   entry,
   output: {
     path: path.join(projectRoot, 'dist'),
-    filename: '[name]_[chunkhash:8].js'
+    filename: '[name]_[chunkhash:8].js',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         use: [
-          'babel-loader'
-        ]
+          'babel-loader',
+        ],
       },
       {
         test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader'
-        ]
+          'css-loader',
+        ],
       },
       {
         test: /\.less$/,
@@ -70,18 +71,18 @@ module.exports = {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: [require('autoprefixer')]
-            }
+              plugins: [autoprefixer],
+            },
           },
           {
             loader: 'px2rem-loader',
             options: {
               remUnit: 75, // 1rem = 75px
-              remPrecesion: 8 // 转为rem后，小数位个数
-            }
+              remPrecesion: 8, // 转为rem后，小数位个数
+            },
           },
-          'less-loader'
-        ]
+          'less-loader',
+        ],
       },
       {
         test: /\.(png|jpg|gif|jpeg)$/,
@@ -89,11 +90,11 @@ module.exports = {
           {
             loader: 'url-loader',
             options: {
-              limit: 10240, // 小于 10KB 会转为 base64 URIs，否则内部会自动调用 file-loader 
-              name: '[name]_[hash:8].[ext]'
-            }
-          }
-        ]
+              limit: 10240, // 小于 10KB 会转为 base64 URIs，否则内部会自动调用 file-loader
+              name: '[name]_[hash:8].[ext]',
+            },
+          },
+        ],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -101,26 +102,26 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name]_[hash:8].[ext]'
-            }
-          }
-        ]
-      }
-    ]
+              name: '[name]_[hash:8].[ext]',
+            },
+          },
+        ],
+      },
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: '[name]_[contenthash:8].css'
+      filename: '[name]_[contenthash:8].css',
     }),
     ...HtmlWebpackPlugins,
     new FriendlyErrorsWebpackPlugin(),
-    function () {
-      this.hooks.done.tap('done', stats => {
+    function errorPlugin() {
+      this.hooks.done.tap('done', (stats) => {
         if (
-          stats.compilation.errors &&
-          stats.compilation.errors.length &&
-          process.argv.indexOf('---watch') === -1
+          stats.compilation.errors
+          && stats.compilation.errors.length
+          && process.argv.indexOf('---watch') === -1
         ) {
           process.exit(1);
         }
