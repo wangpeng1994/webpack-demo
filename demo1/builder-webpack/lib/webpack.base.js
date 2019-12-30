@@ -7,13 +7,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
-const projectRoot = process.cwd();
+const projectRoot = process.cwd(); // 设置工作目录变量
 
 const setMPA = () => {
   const entry = {};
   const HtmlWebpackPlugins = [];
 
-  const entryFiles = glob.sync(path.join(__dirname, './src/*/index.js'));
+  const entryFiles = glob.sync(path.join(projectRoot, './src/*/index.js'));
 
   entryFiles.forEach((pagePath) => {
     const pageName = pagePath.match(/src\/(.*)\/index\.js/)[1];
@@ -22,7 +22,7 @@ const setMPA = () => {
     HtmlWebpackPlugins.push(
       new HtmlWebpackPlugin({
         filename: `${pageName}.html`,
-        template: path.join(__dirname, `src/${pageName}/index.html`),
+        template: path.join(projectRoot, `src/${pageName}/index.html`),
         chunks: ['vendors', 'commons', pageName],
         minify: {
           collapseWhitespace: true,
