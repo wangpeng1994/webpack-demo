@@ -15,6 +15,7 @@ const mocha = new Mocha({
 // 变更当前 node 进程的工作目录
 process.chdir(path.join(__dirname, 'template'));
 
+// 先删除输出目录
 rimraf('./dist', () => {
   const prodConfig = require('../../lib/webpack.prod.js');
 
