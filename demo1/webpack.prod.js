@@ -51,7 +51,7 @@ module.exports = {
     filename: '[name]_[chunkhash:8].js',
   },
   mode: 'production',
-  // stats: 'errors-only',
+  stats: 'errors-only',
   module: {
     rules: [
       {
@@ -122,7 +122,6 @@ module.exports = {
     ...HtmlWebpackPlugins,
     new HTMLInlineCSSWebpackPlugin(),
     new CleanWebpackPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin(),
     new FriendlyErrorsWebpackPlugin(),
     function () {
       this.hooks.done.tap('done', stats => {

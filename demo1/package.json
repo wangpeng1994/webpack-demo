@@ -8,7 +8,8 @@
     "build": "webpack --config webpack.prod.js",
     "watch": "webpack --watch",
     "dev": "webpack-dev-server --config webpack.dev.js --open",
-    "build:ssr": "webpack --config webpack.ssr.js"
+    "build:ssr": "webpack --config webpack.ssr.js",
+    "build:stats": "webpack --config webpack.prod.js --json > stats.json"
   },
   "keywords": [],
   "author": "",
@@ -52,6 +53,7 @@
     "raw-loader": "^4.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "speed-measure-webpack-plugin": "^1.3.1",
     "style-loader": "^1.0.1",
     "url-loader": "^3.0.0",
     "webpack": "^4.41.2",
