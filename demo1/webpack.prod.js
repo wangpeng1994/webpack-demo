@@ -10,6 +10,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const setMPA = () => {
   const entry = {};
@@ -152,7 +153,8 @@ module.exports = {
           }
         }
       ]
-    })
+    }),
+    new BundleAnalyzerPlugin()
   ],
   optimization: {
     splitChunks: {
