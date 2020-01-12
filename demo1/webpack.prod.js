@@ -52,12 +52,18 @@ module.exports = {
     filename: '[name]_[chunkhash:8].js',
   },
   mode: 'production',
-  stats: 'errors-only',
+  // stats: 'errors-only',
   module: {
     rules: [
       {
         test: /\.js$/,
         use: [
+          {
+            loader: 'thread-loader',
+            options: {
+              workers: 1
+            }
+          },
           'babel-loader',
           'eslint-loader'
         ]
@@ -154,7 +160,7 @@ module.exports = {
         }
       ]
     }),
-    new BundleAnalyzerPlugin()
+    // new BundleAnalyzerPlugin()
   ],
   optimization: {
     splitChunks: {
